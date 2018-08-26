@@ -30,6 +30,7 @@ const updateCommitment = gql`
         due
         committedQuantity {
           unit {
+            id
             name
           }
           numericValue
@@ -37,6 +38,7 @@ const updateCommitment = gql`
         resourceClassifiedAs {
           category
           name
+          id
         }
         fulfilledBy {
           fulfilledBy {

@@ -13,8 +13,7 @@ import ModalNote from './modalNote'
 import Actions from './actions'
 import {LoadingMini} from '../loading'
 
-const CardModal = ({param, processId, id, agentId, toggleActions, actionPopup, updateCommitment, allPlanAgents, units, loading, data, error, close, modalDescription}) => {
-  console.log(data)
+const CardModal = ({param, processId, id, agentId, units, loading, data, error, close}) => {
   return (
     loading ? <LoadingMini /> : (
     error ? <p style={{ color: '#ddd' }}>{error}</p> : (
@@ -32,7 +31,7 @@ const CardModal = ({param, processId, id, agentId, toggleActions, actionPopup, u
           <ModalNote note={data.note} />
         </div>
         <h5 className={style.modalDescription_title}>Log your work</h5>
-        <LogEvent processId={processId} agentId={agentId} unit={data.committedQuantity.unit.name} action={data.action} param={param} id={id} units={units} scopeId={data.scope ? data.scope.id : ''} commitmentId={data.id} />
+        <LogEvent resourceId={data.resourceClassifiedAs.id} resource={data.resourceClassifiedAs.name} processId={processId} agentId={agentId} unit={data.committedQuantity.unit.name} action={data.action} param={param} id={id} units={units} scopeId={data.scope ? data.scope.id : ''} commitmentId={data.id} />
         <h5 className={style.modalDescription_title}>Contributions</h5>
         <ModalActivities param={param} units={units} scopeId={data.scope ? data.scope.id : ''} commitmentId={data.id} id={id} />
       </div>

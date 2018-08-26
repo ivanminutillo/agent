@@ -5,7 +5,6 @@ import {
   Input,
   Textarea,
   Button,
-  Select,
   Icons
 } from "oce-components/build";
 import { graphql } from "react-apollo";
@@ -22,7 +21,8 @@ import * as Yup from "yup";
 import updateNotification from "../../mutations/updateNotification";
 import deleteNotification from "../../mutations/deleteNotification";
 import Alert from "../alert";
-import "react-toastify/dist/ReactToastify.css";
+import getResourceClassification from "../../queries/getResourceClassification";
+import Select from "react-select";
 require("react-datepicker/dist/react-datepicker-cssmodules.css");
 
 const events = [
@@ -36,21 +36,17 @@ const events = [
   "Use",
   "Work"
 ];
-let options = events.map((ev, i) => (
-  <option key={i} value={ev}>
-    {ev}
-  </option>
-));
-options.unshift(
-  <option defaultValue="" key={"383737ehshdh"}>
-    Select your event
-  </option>
-);
+let options = events.map((ev, i) => ({
+  value: ev,
+  label: ev
+}));
 
 const NewCommModal = ({
   handleEvent,
+  handleResource,
   setFieldValue,
   setFieldTouched,
+  setSubmitting,
   errors,
   touched,
   values,
@@ -58,76 +54,65 @@ const NewCommModal = ({
   resources,
   units
 }) => {
-  let resourcesOptions = resources.map((ev, i) => (
-    <option key={i} value={ev.id}>
-      {ev.name}
-    </option>
-  ));
-  resourcesOptions.unshift(
-    <option defaultValue="" key={"383737ehshdh"}>
-      Select your resource
-    </option>
-  );
-  let unitsOptions = units.map((ev, i) => (
-    <option key={i} value={ev.id}>
-      {ev.name}
-    </option>
-  ));
-  unitsOptions.unshift(
-    <option defaultValue="" key={"383737ehshdh"}>
-      Select your units
-    </option>
-  );
+  let resourcesOptions = resources.map((ev, i) => {
+    return {
+      value: ev.id,
+      label: ev.name
+    };
+  });
+
+  let unitsOptions = units.map((ev, i) => ({
+    value: ev.id,
+    label: ev.name
+  }));
+
   return (
     <Form>
       <div style={{ padding: "16px", paddingBottom: 0 }}>
         <h1 className={style.commTitle}>Create a new commitment</h1>
         <div className={style.commitmentWrapper}>
-          <div className={style.commInput}>
+          <div className={style.commInput + ' ' + style.event }>
             <EventSelect
               value={values.event}
               onChange={setFieldValue}
-              error={errors.start}
-              touched={touched.start}
+              error={errors.event}
+              touched={touched.event}
               handleEvent={handleEvent}
               options={options}
               client={client}
             />
-            {errors.event && touched.event && <Alert>{errors.event}</Alert>}
           </div>
-          <div className={style.commInput}>
-            <Field
-              name="resource"
-              render={({ field /* _form */ }) => (
-                <Select name={field.name} onChange={field.onChange}>
-                  {resourcesOptions.map(opt => opt)}
-                </Select>
-              )}
+          <div className={style.commInput + ' ' + style.resource}>
+            <ResourceSelect
+              value={values.resource}
+              onChange={setFieldValue}
+              error={errors.resource}
+              touched={touched.resource}
+              options={resourcesOptions}
+              client={client}
+              handleResource={handleResource}
             />
-            {errors.resource &&
-              touched.resource && <Alert>{errors.resource}</Alert>}
           </div>
-          <div className={style.commInput}>
+          <div className={style.commInput + ' ' +  style.qtyInput}>
             <Field
               name="qty"
               render={({ field /* _form */ }) => (
                 <Input
-                  className={style.qtyInput}
                   name={field.name}
                   onChange={field.onChange}
                   placeholder="00.00"
+                  type="number"
+                  step="0.1"
                 />
               )}
             />
             {errors.qty && touched.qty && <Alert>{errors.qty}</Alert>}
           </div>
-          <div className={style.commInput}>
+          <div className={style.commInput + ' ' + style.unit}>
             <Field
               name="unit"
               render={({ field /* _form */ }) => (
-                <Select name={field.name} onChange={field.onChange}>
-                  {unitsOptions.map(opt => opt)}
-                </Select>
+                <Select isDisabled={unitsOptions.length === 0} name={field.name} placeholder='Unit...' options={unitsOptions} onChange={(value) => setFieldValue('unit', value.value)} />
               )}
             />
             {errors.unit && touched.unit && <Alert>{errors.unit}</Alert>}
@@ -166,14 +151,31 @@ const NewCommModal = ({
 
 const EventSelect = props => {
   const handleChange = value => {
-    props.onChange("event", value.target.value);
-    props.handleEvent(props.client, value);
+    props.onChange("event", value.value);
+    props.handleEvent(props.client, value.value);
   };
   return (
     <div>
-      <Select name={"event"} onChange={handleChange}>
-        {props.options.map(opt => opt)}
-      </Select>
+      <Select name={"event"} placeholder='Events' options={options} onChange={handleChange} />
+      {props.error && props.touched && <Alert>{props.error}</Alert>}
+    </div>
+  );
+};
+
+const ResourceSelect = props => {
+  const handleChange = value => {
+    props.onChange("resource", value.value);
+    props.handleResource(props.client, value.value);
+  };
+  return (
+    <div>
+      <Select
+        name={"resource"}
+        isDisabled={props.options.length === 0}
+        options={props.options}
+        placeholder='Resources'
+        onChange={handleChange}
+      />
       {props.error && props.touched && <Alert>{props.error}</Alert>}
     </div>
   );
@@ -208,7 +210,7 @@ export default compose(
   graphql(updateNotification, { name: "updateNotification" }),
   graphql(deleteNotification, { name: "deleteNotification" }),
   withFormik({
-    mapPropsToValues: () => ({
+    mapPropsToValues: props => ({
       event: "",
       note: "",
       resource: "",
@@ -225,7 +227,8 @@ export default compose(
       date: Yup.string()
     }),
     handleSubmit: (values, { props, resetForm, setErrors, setSubmitting }) => {
-      let date = moment(props.date).format("YYYY-MM-DD");
+      let date = moment(values.date).format("YYYY-MM-DD");
+      setSubmitting(true);
       return props.client
         .mutate({
           mutation: CreateCommitment,
@@ -273,7 +276,7 @@ export default compose(
           }
         })
         .then(data => {
-          props.toggleModal()
+          props.toggleModal();
           props
             .updateNotification({
               variables: {
@@ -288,18 +291,18 @@ export default compose(
               }
             })
             .then(res => {
+              setSubmitting(false)
               setTimeout(() => {
                 props.deleteNotification({
                   variables: { id: res.data.addNotification.id }
                 });
               }, 1000);
-            })
-          }
-        )
+            });
+        })
         .catch(e => {
-          props.toggleModal()
+          props.toggleModal();
           const errors = e.graphQLErrors.map(error => error.message);
-          props.setSubmitting(false);
+          setSubmitting(false);
           props
             .updateNotification({
               variables: {
@@ -331,7 +334,7 @@ export default compose(
           query: getResourcesQuery,
           variables: {
             token: localStorage.getItem("oce_token"),
-            action: ev.target.value.toUpperCase()
+            action: ev.toUpperCase()
           }
         })
         .then(res => {
@@ -340,19 +343,32 @@ export default compose(
               activeResources: res.data.viewer.resourceClassificationsByAction
             }
           });
+          props.onResourcesArray([]);
           props.onResourcesArray(
             res.data.viewer.resourceClassificationsByAction || []
           );
-          client
-            .query({
-              query: getUnitsQuery,
-              variables: {
-                token: localStorage.getItem("oce_token")
-              }
-            })
-            .then(res => {
-              props.onUnitsArray(res.data.viewer.allUnits || []);
-            });
+          props.onUnitsArray([]);
+        })
+        .catch(e => console.log(e));
+    },
+    handleResource: props => (client, ev) => {
+      return client
+        .query({
+          query: getResourceClassification,
+          variables: {
+            token: localStorage.getItem("oce_token"),
+            id: ev
+          }
+        })
+        .then(res => {
+          let arr = [];
+          if (res.data.viewer.resourceClassification.unit.id === "2") {
+            arr.push(res.data.viewer.resourceClassification.unit);
+          } else {
+            arr.push(res.data.viewer.resourceClassification.unit);
+            arr.push({ id: "2", name: "Hour" });
+          }
+          props.onUnitsArray(arr || []);
         })
         .catch(e => console.log(e));
     }

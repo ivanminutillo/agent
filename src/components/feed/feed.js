@@ -1,9 +1,9 @@
 import React from "react";
 import style from "./index.css";
 import moment from "moment";
-
+import { NavLink } from 'react-router-dom'
 export default function({ feed }) {
-  console.log(feed);
+console.log(feed)
   return (
     <div className={style.activities_list}>
       {feed.map((item, i) => (
@@ -12,7 +12,7 @@ export default function({ feed }) {
             <span className={style.members_item}>
               <span
                 style={{
-                  backgroundImage: item.provider.image
+                  backgroundImage: item.provider
                     ? `url(${item.provider.image})`
                     : ""
                 }}
@@ -20,8 +20,8 @@ export default function({ feed }) {
             </span>
           </div>
           <div className={style.item_desc}>
-            <span>{item.provider.name}</span>{" "}
-            {item.action + " " + item.affectedQuantity.numericValue + " "} <i>of</i> {item
+            {item.provider ? <span><NavLink to={`/agent/${item.provider.id}`}>{item.provider.name}</NavLink></span> : null}
+            {" " + item.action + " " + item.affectedQuantity.numericValue + " "} <i>of</i> {item
               .affectedQuantity.unit
               ? item.affectedQuantity.unit.name
               : ""}

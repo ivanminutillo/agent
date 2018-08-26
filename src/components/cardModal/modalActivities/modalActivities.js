@@ -31,6 +31,7 @@ export default function({
   error,
   refetchData
 }) {
+  console.log(error)
   return (
     <div className={style.activities_list}>
       {loading ? (
@@ -95,7 +96,7 @@ export default function({
                       date={item.fulfilledBy.start}
                       scopeId={scopeId}
                       commitmentId={commitmentId}
-                      reqestPayment={item.fulfilledBy.requestDistribution}
+                      requestPayment={item.fulfilledBy.requestDistribution}
                     />
                   </div>
                 </div>

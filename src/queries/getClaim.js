@@ -12,21 +12,9 @@ query ($token: String, $id: Int) {
         name
       }
       planProcesses {
-        name
         id
         committedInputs(action: WORK) {
-          note
           id
-          action
-          resourceClassifiedAs{
-            name
-          }
-          committedQuantity {
-            unit {
-              name
-            }
-            numericValue
-          }
           fulfilledBy(requestDistribution: true) {
             fulfilledBy {
               id
@@ -46,6 +34,7 @@ query ($token: String, $id: Int) {
               affectedQuantity {
                 numericValue
                 unit {
+                  id
                   name
                 }
               }
@@ -53,6 +42,7 @@ query ($token: String, $id: Int) {
                 resourceClassifiedAs {
                   name
                   category
+                  id
                 }
                 trackingIdentifier
               }

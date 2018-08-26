@@ -1,12 +1,13 @@
 import gql from 'graphql-tag'
 
-const agentQuery = gql`
+export default gql`
 query ($token: String, $id: Int) {
     viewer(token: $token) {
       agent(id: $id) {
         id
         name
         image
+        email
         note
         type
         agentRelationships {
@@ -33,49 +34,7 @@ query ($token: String, $id: Int) {
             }
           }
         }
-        agentEconomicEvents(latestNumberOfDays: 30) {
-          note
-          action
-          provider {
-            image
-            name
-          }
-          inputOf {
-            name
-          }
-          receiver {
-            name
-          }
-          start
-          requestDistribution
-          note
-          affectedQuantity {
-            numericValue
-            unit {
-              name
-            }
-          }
-        }
-        agentPlans (isFinished: false) {
-          name
-          id
-          note
-          due
-          plannedOn
-          planProcesses {
-            isStarted
-            isFinished
-            name
-            workingAgents {
-              id
-              name
-              image
-            }
-          }
-        }
       }
     }
   }
 `
-
-export default agentQuery

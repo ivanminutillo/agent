@@ -1,6 +1,6 @@
 import React from "react";
 import style from "../index.css";
-import { Button, Input, Textarea } from "oce-components/build";
+import { Button, Input, Textarea, Icons } from "oce-components/build";
 import DatePicker from "react-datepicker";
 import ToggleButton from "react-toggle-button";
 import { Form, Field } from "formik";
@@ -13,10 +13,14 @@ const StartDate = props => {
   };
   return (
     <div className={style.item_date}>
+      <span>
+        <Icons.Calendar width="18" height="18" color="#3B99FC" />
+      </span>
       <DatePicker
         selected={props.value}
         onChange={handleChange}
         dateFormat={"DD MMM"}
+        withPortal
       />
       {props.error && props.touched && <Alert>{props.error}</Alert>}
     </div>
@@ -32,7 +36,10 @@ export default function LogEvent({
   setFieldTouched,
   unit,
   units,
+  resource,
+  resourceId
 }) {
+
   return (
     <Form>
       <div className={style.content_module}>
@@ -56,15 +63,11 @@ export default function LogEvent({
                   />
                 )}
               />
-              {errors.numericValue && touched.numericValue && <Alert>{errors.numericValue}</Alert>}
+              {errors.numericValue &&
+                touched.numericValue && <Alert>{errors.numericValue}</Alert>}
               <h5 className={style.sentence_action}>{unit}</h5>
-              <StartDate
-                value={values.date}
-                onChange={setFieldValue}
-                onBlur={setFieldTouched}
-                error={errors.start}
-                touched={touched.start}
-              />
+              <span className={style.of}>of</span>
+              <h5 className={style.sentence_action}>{resource}</h5>
             </div>
             <Field
               name="note"
@@ -77,21 +80,73 @@ export default function LogEvent({
                 />
               )}
             />
-            <div className={style.item_publishActions}>
-              <Button>Publish</Button>
-              <div className={style.item_distribution}>
-                <Field
-                  name="requestPayment"
-                  render={({ field /* _form */ }) => (
-                    <ToggleButton
-                      name={field.name}
-                      value={field.value}
-                      onToggle={(value) => setFieldValue('requestPayment', !value)}
-                    />
-                  )}
-                />
-                <label>Request payment</label>
+            {action === "produce" ||
+            action === "use" ||
+            action === "consume" ? (
+              <div>
+                <div className={style.item_publishResourceName}>
+                  <span>
+                    <Icons.Edit width="16" height="16" color="#525561" />
+                  </span>
+                  <Field
+                    name="resourceTrackingIdentifier"
+                    render={({ field /* _form */ }) => (
+                      <Input
+                        value={field.value}
+                        name={field.name}
+                        onChange={field.onChange}
+                        placeholder="Type an identify name for the resource..."
+                      />
+                    )}
+                  />
+                </div>
+
+                <div className={style.item_extLink}>
+                  <span>
+                    <Icons.Link width="16" height="16" color="#525561" />
+                  </span>
+                  <Field
+                    name="url"
+                    render={({ field /* _form */ }) => (
+                      <Input
+                        value={field.value}
+                        name={field.name}
+                        onChange={field.onChange}
+                        placeholder="Type an optional external url for the resource ..."
+                      />
+                    )}
+                  />
+                </div>
               </div>
+             ) : null}
+            <div className={style.item_publishActions}>
+              <StartDate
+                value={values.date}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+                error={errors.start}
+                touched={touched.start}
+              />
+              <Button className={style.publish_button}>Publish</Button>
+              {action === "produce" ||
+              action === "use" ||
+              action === "consume" ? null : (
+                <div className={style.item_distribution}>
+                  <Field
+                    name="requestPayment"
+                    render={({ field /* _form */ }) => (
+                      <ToggleButton
+                        name={field.name}
+                        value={field.value}
+                        onToggle={value =>
+                          setFieldValue("requestPayment", !value)
+                        }
+                      />
+                    )}
+                  />
+                  <label>Request payment</label>
+                </div>
+              )}
             </div>
           </div>
         </div>

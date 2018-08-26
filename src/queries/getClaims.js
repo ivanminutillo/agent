@@ -1,71 +1,33 @@
 import gql from 'graphql-tag'
 
 const GetClaims = gql`
-query ($token: String, $id: Int) {
+query ($token: String, $id: Int, $month: Int, $year: Int) {
     viewer(token: $token) {
       agent(id: $id) {
-        name
-        eventsCount(month:4, year:2018)
-        eventHoursCount(month:4, year:2018)
-        eventPeopleCount(month:4, year:2018)
-        validatedEventsCount(month:4, year:2018)
-        agentPlans(month:4, year: 2018) {
-          name
-          id
-          plannedOn
-          planProcesses(month:4, year: 2018) {
-            name
+        id
+        eventsCount(month:$month, year:$year)
+        eventHoursCount(month:$month, year:$year)
+        eventPeopleCount(month:$month, year:$year)
+        agentPlans (isFinished: false, month:$month, year:$year ) {
+          planProcesses (month:$month, year:$year) {
             id
             committedInputs(action: WORK) {
-              note
-              action
-              resourceClassifiedAs{
-                name
-              }
-              committedQuantity {
-                unit {
-                  name
-                }
-                numericValue
-              }
               fulfilledBy(requestDistribution: true) {
                 fulfilledBy {
                   id
-                  action
-                  validations {
-                    id
-                    validatedBy {
-                      name
-                      id
-                    }
-                  }
-                  start
-                  inputOf {
-                    name
-                  }
-                  affectedQuantity {
-                    numericValue
-                    unit {
-                      name
-                    }
-                  }
-                  affects {
-                    resourceClassifiedAs {
-                      name
-                      category
-                    }
-                    trackingIdentifier
-                  }
                   provider {
                     id
                     name
                     image
                   }
-                  receiver {
-                    id
-                    name
+                  affectedQuantity {
+                    numericValue
                   }
-                  note
+                  validations {
+                    validatedBy {
+                      id
+                    }
+                  }
                 }
               }
             }

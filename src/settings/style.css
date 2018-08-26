@@ -3,149 +3,76 @@ body {
     font-family: 'Fira Sans';
     background-color: #191B22 !important;
 }
+
+
 .settings {
-    lost-utility:clearfix;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  overflow-x: auto;
+  position: relative;
+  margin-left: -5px;
+  margin-right: -5px;
 }
-.settings_container {
-    lost-column: 3/5;
-    lost-offset: 1/5;
-    background: white;
-    margin-top: 0px;
-    border: 1px solid #DCDCDC;
+
+
+.skill_item {
+    border: 1px solid #2687d1;
+    padding: 5px;
     border-radius: 2px;
-    box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
-    padding-bottom: 70px;
-}
-
-.settings_container {
-    @mixin for-phone-only {
-        width: 100%;
-        margin-left: 0 !important;
-      }
-}
-
-.container_notification .container_form {
-    text-align: center;
-    margin-top: 30px;
-    padding-left: 30px;
-}
-
-.container_notification .form_item .item_info {
-    margin: 0;
-    margin-left: 0px;
-    height: 60px;
-    text-align: left;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    lost-column: 2/3;
-}
-
-.container_notification .form_item .item_status {
-    lost-column: 1/3;
-}
-.container_notification .form_item .item_status input {
-    width: auto;
-    float: none;
-    width: 20px;
-}
-
-.container_notification .form_item h5 {
-    line-height: 22px;
-    letter-spacing: .5px;
-    font-size: 20px;
-    font-weight: 500;
-    color: #3F4657;
-    display: block;
-    width: 100%;
-    float: none;
-    text-align: left;
-    height: auto;
-}
-
-.container_notification .form_item p {
-    font-size: 14px;
-    letter-spacing: .5px;
-    margin: 0;
-    margin-top: 5px;
-    color: #868686;
+    color: #3B99FC;
+    font-size: 13px;
     font-weight: 400;
+    margin-right: 8px;
+    display: inline-block;
+    margin-bottom: 8px;
 }
 
-
-.scope_list {
-    list-style: none;
-    padding: 0;
-    margin: 0 20px;
-    /* border-bottom:1px solid #dadada; */
-    lost-utility: clearfix;
-    padding-bottom: 10px;
-    lost-column: 3/5;
-    lost-offset: 1/5;
-    margin-top: 40px;
-    height: 40px;
-    margin-bottom: 20px;
-    background: #fff;
-    border: 1px solid #dadada;
-    border-radius: 2px;
-    padding-bottom: 0;
-    padding-top: 10px;
-    z-index: 999999999;
-    position: relative;
-    border-bottom: 0;
-    border-radius: 2px 2px 0 0;
-    margin-bottom: 0;
-  }
-
-  .scope_list {
-    @mixin for-phone-only {
-        width: 100%;
-        margin-top: 0;
-        margin-left: 0 !important;
-      }
-  }
-
-  
-  .scope_list li {
-    color: #161515;
-    font-weight: 400;
-    letter-spacing: .5px;
-    margin-right: 50px;
+.settings_menu {
+    width: 230px;
     float: left;
+    background: #20242B;
+    margin-left: -10px;
+    margin-top: -10px;
+    min-height: 100vh;
+    margin-right: 30px;
+}
+
+.settings_menu .menu_item {
+    height: 60px;
+    color:#99ADC6;
+    font-size: 14px;
+    line-height: 60px;
+    border-bottom: 1px solid rgba(240, 240, 240, 0.15);
+    padding-left: 10px;
+    letter-spacing: .5px;
     cursor: pointer;
-    margin-left: 20px;
-    margin-top: 5px;
-  }
-  
-  .scope_list li.list_active {
-    color: #161515;
+}
+
+.menu_item span {
+    vertical-align: sub;
+    margin-right: 8px;
+}
+
+.container_form h2 {
+    color: #f0f0f0;
+    font-size: 24px;
+    letter-spacing: .7px;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 30px;
     font-weight: 500;
-    position: relative;
-    
-  }
-  .scope_list li.list_active:after {
-    position: absolute;
-    content: "";
-    left: 0;
-    bottom: -16px;
-    height: 2px;
-    font-weight: 500px;
-    background: #161515;
-    width: 100%;
-    display: block;
-    
-  }
+}
+
+.container_form h4 {
+    margin: 0;
+    font-size : 18px;
+    font-weight: 300;
+    color: #8d9eb7;
+}
   
 .container_title {
     font-size: 18px;
@@ -160,65 +87,38 @@ body {
     border-bottom: 1px solid #DCDCDC;
 }
 
-.container_form {
-    /* padding: 10px; */
-    margin-top: 20px;
-}
-
 .form_item {
     lost-utility: clearfix;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .form_item h5 {
-    font-size: 16px;
+    font-size: 14px;
     color: #f0f0f0;
     font-weight: 400;
     margin: 0;
-    margin-left: 10px;
     margin-bottom: 5px;
 }
 
 .item_photo {
     float: left;
     margin-left: 10px;
-    width: 60px;
-    height: 60px;
-    border-radius: 2px;
+    width: 90px;
+    height: 90px;
+    border-radius: 4px;
     background: #DCDCDC;
     margin: 0 auto;
     margin-top: 10px;
-}
-
-.item_photo img {
-    width: 60px;
-    height: 60px;
+    background-size: cover;
 }
 
 .form_item input {
-    margin-left: 10px;
-    height: 40px;
-    font-size: 14px;
-    color: #3F4657;
-    font-weight: 400;
-    text-indent: 10px;
-    /* width: 250px; */
     width: 300px;
-    /* margin-right: 10px; */
-    border: 0;
-    border-radius: 3px;
 }
 
 .form_item textarea {
-    margin-left: 10px;
-    font-size: 14px;
-    color: #3F4657;
-    background: white;
-    font-weight: 400;
-    text-indent: 10px;
-    display: inline-block;
     width: 300px;
-    height: 100px;
+    height: 150px;
 }
 
 .form_actions {
@@ -233,8 +133,10 @@ body {
     margin-top: 8px;
 }
 
-.container_form .form_item {
-  padding-bottom: 10px;
+.menu_item.active {
+  background: #3B99FC;
+  color: #f0f0f0;
+  border-bottom: none;
 }
 
 .form_setting {
@@ -242,21 +144,22 @@ body {
   border-bottom: 1px solid rgba(240, 240, 240, 0.15)
 }
 
+.container_form {
+    width: 400px;
+    float: left;
+}
+
 .container_form .form_item  .item_info{
     float: left;
-    width: 200px;
+    width: 320px;
 }
 
 .container_form .form_item p {
     font-size: 14px;
-    color: #f0f0f0a6;
-    margin-left: 10px;
+    color: rgb(153, 173, 198);
     margin: 0;
-    margin-left: 10px;
 }
 
 .item_status {
     float: right;
-    /* margin-top: -45px; */
-    margin-right: 20px;
 }

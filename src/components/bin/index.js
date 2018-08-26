@@ -5,6 +5,7 @@ import UpdateProcess from "../../mutations/updateProcess";
 import { Bin, Card, Icons } from "oce-components/build";
 import EditTitle from "./editTitle";
 import EditStart from "./editStart";
+import EditDue from "./editDue";
 import EditScope from "./editScope";
 import EditNote from "./editNote";
 import Archive from "./archive";
@@ -13,6 +14,7 @@ import updateNotification from "../../mutations/updateNotification";
 import deleteNotification from "../../mutations/deleteNotification";
 import gql from "graphql-tag";
 import style from "./style.css";
+import {NavLink} from 'react-router-dom'
 
 const BinWrapper = ({
   name,
@@ -55,7 +57,7 @@ const BinWrapper = ({
       updateProcess={updateProcess}
       name={name}
       status={status}
-      scope={scope}
+      scope={<NavLink to={`/agent/${scopeId}`}>{scope}</NavLink>}
       infoNote={note}
       Scopeform={
         <EditScope
@@ -74,6 +76,15 @@ const BinWrapper = ({
           id={id}
           planId={planId}
           start={plannedStart}
+        />
+      }
+      Dueform={
+        <EditDue
+          planStart={planStartDate}
+          planDue={planDueDate}
+          id={id}
+          planId={planId}
+          due={plannedFinish}
         />
       }
       Archive={<Archive id={id} planId={planId} />}

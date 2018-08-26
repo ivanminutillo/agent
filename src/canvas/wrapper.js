@@ -9,17 +9,7 @@ import style from "./style.css";
 import CardModal from "../components/cardModal";
 import NewCommitmentModal from "../components/newCommitmentModal/wrapper";
 import PlanModal from '../components/planModal'
-import { LoadingMini } from "../components/loading";
-
-const ErrorPlan = () => (
-  <div className={style.errorWrapper}>
-    <h1 className={style.errorEmoji}>🕳️</h1>
-    <h3 className={style.errorWrapperTitle}>This plan is closed.</h3>
-    <h5 className={style.errorWrapperDesc}>The plan may be closed or inexistent</h5>
-    <Link className={style.errorLink} to='/'>Back home</Link>
-  </div>
-)
-
+import { LoadingMini, ErrorMini } from "../components/loading";
 
 const CanvasWrapper = ({
   match,
@@ -45,25 +35,27 @@ const CanvasWrapper = ({
       planId: Number(match.params.id)
     }}
   >
-    {({ loading, error, data }) => {
+    {({ loading, error, data, refetch }) => {
       if (loading) return <LoadingMini />;
-      if (error) return <ErrorPlan />;
+      if (error) return <ErrorMini refetch={refetch} message={`Error! ${error.message}`} />;
       return (
-        <div style={{ display: "initial" }}>
+        <div className={style.agentWrapper}>
+        <div className={style.wrapper}>
           <Panel
             large
             icon={<Icons.Globe width="18" color="#f0f0f0" />}
             title={data.viewer.plan.name}
             navigation
             back={() => history.goBack()}
+            
             forward={() => history.goForward()}
             actions={
               <div>
               <Button small onClick={onTogglePlanModal}><span data-edit='edit-plan' className={style.buttonIcon}><Icons.Edit width='16' height='16' color='#fff' /></span> Edit Plan</Button>
-              <Link className={style.right_button} to={`${match.url}/validate`}>
+              <Link className={style.right_button} to={`${match.url}/overview`}>
                 <span>
-                  <Icons.Validate width={18} height={18} color={"#fafafa"} />
-                </span>Validate
+                  <Icons.Activity width={18} height={18} color={"#fafafa"} />
+                </span>Overview
               </Link>
               </div>
             }
@@ -82,7 +74,6 @@ const CanvasWrapper = ({
             />
          </Panel>
           <CardModal
-            allPlanAgents={data.viewer.plan.allPlanAgents}
             modalIsOpen={modalIsOpen}
             closeModal={closeModal}
             toggleModal={toggleModal}
@@ -111,6 +102,7 @@ const CanvasWrapper = ({
             match={match}
             scopeId={scopeId}
           />
+          </div>
         </div>
       );
     }}

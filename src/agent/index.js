@@ -1,65 +1,53 @@
-import React from 'react'
-import style from './style.css'
-import Cards from '../components/cards'
-import Feed from '../components/feed/feed'
-import { NavLink } from 'react-router-dom'
-import Item from '../components/inventoryItem'
-import {Icons, Panel, NavigationItem} from 'oce-components/build'
-// import Panel from '../components/panel'
+import React from "react";
+import style from "./style.css";
+import Header from "./header";
+import Agent from "./agent";
+import { PropsRoute } from "../helpers/router";
+import Inventory from '../inventory'
+import About from '../about'
+// import Validate from '../validate/wrapper'
 
-const Agent = ({data, match}) => {
+export default ({ data, match, toggleModal, isOpen }) => {
   return (
-    <section className={style.agent}>
-      <Panel data-testid='diary' icon={<Icons.Diary width='18' color='#f0f0f0' />} title='Diary'>
-        <div className={style.agent_profile}>
-          <div className={style.agent_info}>
-            <div className={style.info_image}>
-              <span className={style.image_photo} style={{backgroundImage: data.image ? `url(${data.image})` : `url('./images/sample.png')`}} />
-            </div>
-            <h1 className={style.info_title}>{data.name}</h1>
-          </div>
-          {data.agentEconomicEvents.length > 0
-          ? <Feed feed={data.agentEconomicEvents} />
-          : <div className={style.emptyBox}>No item in this section :(</div>}
-        </div>
-      </Panel>
-      <Panel data-testid='network' icon={<Icons.Globe width='18' color='#f0f0f0' />} title={data.type === 'Person' ? 'Network' : 'Participants'}>
-        <div className={style.agent_list}>
-          {data.type === 'Person' 
-          ? data.agentRelationships.map((item, i) => (
-            <NavLink key={i} activeClassName={style.activeLink} to={'/agent/' + item.object.id}>
-              <NavigationItem img={item.object.image} title={item.object.name} />
-            </NavLink>
-          ))
-          : data.agentRelationships.map((item, i) => (
-            <NavLink key={i} activeClassName={style.activeLink} to={'/agent/' + item.subject.id}>
-              <NavigationItem img={item.subject.image} title={item.subject.name} />
-            </NavLink>
-          )) }
-          
-        </div>
-      </Panel>
-      <Panel data-testid='plans' icon={<Icons.Card width='18' color='#f0f0f0' />} title='Plans'>
-        {data.agentPlans.length > 0
-          ? <Cards
-            data={data.agentPlans}
-            link='/canvas'
-          />
-          : <div className={style.emptyBox}>No item in this section :(</div>
-        }
-      </Panel>
-      <Panel data-testid='inventory' icon={<Icons.Inventory width='18' color='#f0f0f0' />} title='Inventory'>
-        <div className={style.resources_list}>
-          {data.ownedEconomicResources.length > 0
-            ? data.ownedEconomicResources.map((item, i) => (
-              <Item item={item} key={i} />
-            ))
-          : <div className={style.emptyBox}>No item in this section :(</div>
-          }
-        </div>
-      </Panel>
-    </section>
-  )
-}
+    <div className={style.agentWrapper}>
+      <Header data={data} />
+        <PropsRoute
+          exact
+          path={match.path}
+          component={Agent}
+          data={data}
+          toggleModal={toggleModal}
+          isOpen={isOpen}
+          id={data.id}
+        />
+        <PropsRoute
+          exact
+          path={`${match.path}/inventory`}
+          component={Inventory}
+          data={data}
+          toggleModal={toggleModal}
+          isOpen={isOpen}
+          id={data.id}
+        />
+        {/* <PropsRoute
+          exact
+          path={`${match.path}/validate`}
+          component={Validate}
+          data={data}
+          toggleModal={toggleModal}
+          isOpen={isOpen}
+          id={data.id}
+        /> */}
+        <PropsRoute
+          exact
+          path={`${match.path}/about`}
+          component={About}
+          data={data}
+          toggleModal={toggleModal}
+          isOpen={isOpen}
+          id={data.id}
+        />
+    </div>
+  );
+};
 
-export default Agent
