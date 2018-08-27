@@ -15,6 +15,13 @@ query ($token: String, $id: Int, $month: Int, $year: Int) {
               fulfilledBy(requestDistribution: true) {
                 fulfilledBy {
                   id
+                  inputOf {
+                    id
+                    processPlan {
+                      id
+                      name
+                    }
+                  }
                   provider {
                     id
                     name

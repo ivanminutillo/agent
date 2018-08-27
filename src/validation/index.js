@@ -54,7 +54,8 @@ export default props => {
                     uniqueAgents[i].events.push({
                       id: item.fulfilledBy.id,
                       hours: item.fulfilledBy.affectedQuantity.numericValue,
-                      validations: item.fulfilledBy.validations.length
+                      validations: item.fulfilledBy.validations.length,
+                      plan: item.fulfilledBy.inputOf.processPlan.name
                     })
                   );
               })

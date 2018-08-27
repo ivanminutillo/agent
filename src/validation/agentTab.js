@@ -61,6 +61,7 @@ const Contribution = compose(
 const Popup = (event) => {
     return (
     <div className={style.popup}>
+        <h2>{event.event.plan}</h2>
         <h1>{event.event.hours} hours</h1>
     </div>
 )}

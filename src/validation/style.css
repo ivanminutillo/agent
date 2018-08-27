@@ -1,3 +1,24 @@
+
+.header_title {
+  float: left;
+}
+
+.header_title h2 {
+  line-height: 45px;
+  margin: 0;
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f0f0f0;
+  letter-spacing: .5px;
+}
+
+
+.header_select {
+  float: right;
+  width: 330px;
+}
+
 .container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -311,22 +332,37 @@ ul.tabs > li:after {
 
 .popup {
   position: absolute;
-  top: -30px;
+  top: -50px;
   left: 50%;
-  margin-left: -40px;
-  width: 60px;
-  height: 30px;
+  margin-left: -80px;
+  width: 160px;
+  /* min-width: 60px; */
+  /* height: 40px; */
   border-radius: 2px;
   padding: 0 8px;
   background: #1b1c1d90;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .popup h1 {
+  font-size: 12px;
+  font-weight: 300;
+  color: #f0f0f0;
+  text-align: center;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.popup h2 {
   font-size: 13px;
   font-weight: 500;
   color: #f0f0f0;
   text-align: center;
-  line-height: 30px;
+  line-height: 20px;
   margin: 0;
   padding: 0;
+  margin-top: 4px;
 }
