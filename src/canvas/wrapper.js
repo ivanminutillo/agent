@@ -50,13 +50,13 @@ const CanvasWrapper = ({
             
             forward={() => history.goForward()}
             actions={
-              <div>
-              <Button small onClick={onTogglePlanModal}><span data-edit='edit-plan' className={style.buttonIcon}><Icons.Edit width='16' height='16' color='#fff' /></span> Edit Plan</Button>
-              <Link className={style.right_button} to={`${match.url}/overview`}>
+              <div className={style.planactions}>
+                <div className={style.planactions_edit} onClick={onTogglePlanModal}><span data-edit='edit-plan' className={style.buttonIcon}><Icons.Settings width='18' height='18' color='#99ADC6' /></span></div>
+              {/* <Link className={style.right_button} to={`${match.url}/overview`}>
                 <span>
                   <Icons.Activity width={18} height={18} color={"#fafafa"} />
                 </span>Overview
-              </Link>
+              </Link> */}
               </div>
             }
           >

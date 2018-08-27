@@ -36,6 +36,15 @@
   padding-right: 10px;
 }
 
+.planactions {
+  margin-top: 11px;
+  margin-right: 10px;
+}
+
+.planactions_edit {
+  cursor: pointer;
+}
+
 .wrapper {
   display: flex;
   flex: 1 1 auto;
